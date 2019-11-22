@@ -1,0 +1,294 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		23B55FC91CC4508700D3BDFD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23B55FC81CC4508700D3BDFD /* Cocoa.framework */; };
+		23B55FD31CC4508700D3BDFD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 23B55FD11CC4508700D3BDFD /* InfoPlist.strings */; };
+		23B55FD51CC4508700D3BDFD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B55FD41CC4508700D3BDFD /* main.m */; };
+		23B55FD91CC4508800D3BDFD /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 23B55FD71CC4508800D3BDFD /* Credits.rtf */; };
+		23B55FDC1CC4508800D3BDFD /* ImpAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B55FDB1CC4508800D3BDFD /* ImpAppDelegate.m */; };
+		23B55FDF1CC4508800D3BDFD /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23B55FDD1CC4508800D3BDFD /* MainMenu.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		23B55FC41CC4508700D3BDFD /* ImpBridge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImpBridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		23B55FC81CC4508700D3BDFD /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		23B55FCB1CC4508700D3BDFD /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		23B55FCC1CC4508700D3BDFD /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		23B55FCD1CC4508700D3BDFD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		23B55FD01CC4508700D3BDFD /* ImpBridge-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ImpBridge-Info.plist"; sourceTree = "<group>"; };
+		23B55FD21CC4508700D3BDFD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		23B55FD41CC4508700D3BDFD /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		23B55FD61CC4508700D3BDFD /* ImpBridge-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ImpBridge-Prefix.pch"; sourceTree = "<group>"; };
+		23B55FD81CC4508800D3BDFD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		23B55FDA1CC4508800D3BDFD /* ImpAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImpAppDelegate.h; sourceTree = "<group>"; };
+		23B55FDB1CC4508800D3BDFD /* ImpAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImpAppDelegate.m; sourceTree = "<group>"; };
+		23B55FDE1CC4508800D3BDFD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		23B55FC11CC4508700D3BDFD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				23B55FC91CC4508700D3BDFD /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		23B55FB91CC4508700D3BDFD = {
+			isa = PBXGroup;
+			children = (
+				23B55FCE1CC4508700D3BDFD /* ImpBridge */,
+				23B55FC71CC4508700D3BDFD /* Frameworks */,
+				23B55FC51CC4508700D3BDFD /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		23B55FC51CC4508700D3BDFD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				23B55FC41CC4508700D3BDFD /* ImpBridge.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		23B55FC71CC4508700D3BDFD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				23B55FC81CC4508700D3BDFD /* Cocoa.framework */,
+				23B55FCA1CC4508700D3BDFD /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		23B55FCA1CC4508700D3BDFD /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				23B55FCB1CC4508700D3BDFD /* AppKit.framework */,
+				23B55FCC1CC4508700D3BDFD /* CoreData.framework */,
+				23B55FCD1CC4508700D3BDFD /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		23B55FCE1CC4508700D3BDFD /* ImpBridge */ = {
+			isa = PBXGroup;
+			children = (
+				23B55FDA1CC4508800D3BDFD /* ImpAppDelegate.h */,
+				23B55FDB1CC4508800D3BDFD /* ImpAppDelegate.m */,
+				23B55FDD1CC4508800D3BDFD /* MainMenu.xib */,
+				23B55FCF1CC4508700D3BDFD /* Supporting Files */,
+			);
+			path = ImpBridge;
+			sourceTree = "<group>";
+		};
+		23B55FCF1CC4508700D3BDFD /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				23B55FD01CC4508700D3BDFD /* ImpBridge-Info.plist */,
+				23B55FD11CC4508700D3BDFD /* InfoPlist.strings */,
+				23B55FD41CC4508700D3BDFD /* main.m */,
+				23B55FD61CC4508700D3BDFD /* ImpBridge-Prefix.pch */,
+				23B55FD71CC4508800D3BDFD /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		23B55FC31CC4508700D3BDFD /* ImpBridge */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 23B55FE21CC4508800D3BDFD /* Build configuration list for PBXNativeTarget "ImpBridge" */;
+			buildPhases = (
+				23B55FC01CC4508700D3BDFD /* Sources */,
+				23B55FC11CC4508700D3BDFD /* Frameworks */,
+				23B55FC21CC4508700D3BDFD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ImpBridge;
+			productName = ImpBridge;
+			productReference = 23B55FC41CC4508700D3BDFD /* ImpBridge.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		23B55FBB1CC4508700D3BDFD /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+				ORGANIZATIONNAME = "Crystal Lake Designs";
+			};
+			buildConfigurationList = 23B55FBE1CC4508700D3BDFD /* Build configuration list for PBXProject "ImpBridge" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 23B55FB91CC4508700D3BDFD;
+			productRefGroup = 23B55FC51CC4508700D3BDFD /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				23B55FC31CC4508700D3BDFD /* ImpBridge */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		23B55FC21CC4508700D3BDFD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				23B55FD31CC4508700D3BDFD /* InfoPlist.strings in Resources */,
+				23B55FD91CC4508800D3BDFD /* Credits.rtf in Resources */,
+				23B55FDF1CC4508800D3BDFD /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		23B55FC01CC4508700D3BDFD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				23B55FD51CC4508700D3BDFD /* main.m in Sources */,
+				23B55FDC1CC4508800D3BDFD /* ImpAppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		23B55FD11CC4508700D3BDFD /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				23B55FD21CC4508700D3BDFD /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		23B55FD71CC4508800D3BDFD /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				23B55FD81CC4508800D3BDFD /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		23B55FDD1CC4508800D3BDFD /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				23B55FDE1CC4508800D3BDFD /* en */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		23B55FE01CC4508800D3BDFD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		23B55FE11CC4508800D3BDFD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		23B55FE31CC4508800D3BDFD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ImpBridge/ImpBridge-Prefix.pch";
+				INFOPLIST_FILE = "ImpBridge/ImpBridge-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		23B55FE41CC4508800D3BDFD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ImpBridge/ImpBridge-Prefix.pch";
+				INFOPLIST_FILE = "ImpBridge/ImpBridge-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		23B55FBE1CC4508700D3BDFD /* Build configuration list for PBXProject "ImpBridge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				23B55FE01CC4508800D3BDFD /* Debug */,
+				23B55FE11CC4508800D3BDFD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		23B55FE21CC4508800D3BDFD /* Build configuration list for PBXNativeTarget "ImpBridge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				23B55FE31CC4508800D3BDFD /* Debug */,
+				23B55FE41CC4508800D3BDFD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 23B55FBB1CC4508700D3BDFD /* Project object */;
+}
