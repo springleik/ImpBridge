@@ -3,7 +3,7 @@ AC Impedance Bridge server for iOS, client runs on MacOS.
 
 As described at http://www.williamsonic.com/ImpBridge/index.html
 
-Screen shot of iOS app which measures AC impedance.  External bridge circuit is driven by the headphones ouputs, imbalance detected through the mic input.  Runs as a measurement server, exposing a socket interface over WiFi.
+Screen shot of iOS app which measures AC impedance.  External bridge circuit is driven by the headphone ouput, imbalance is detected through the mic input.  Runs as a measurement server, exposing a socket interface over WiFi.
 
 ![iOS Screen Capture](iOS-ImpBridge.png "iOS ImpBridge")
 
