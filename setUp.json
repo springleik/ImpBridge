@@ -1,0 +1,13 @@
+{
+  "sampRate": 48000,
+  "freqHz": 100.0,
+  "leftAmpl": 12000,
+  "rightAmpl": 12000,
+  "phaseN": 0,
+  "quietS": 4800,
+  "exciteS": 9600,
+  "numCyc": 20,
+  "numPts": 1,
+  "fName": "setUp",
+  "durationS": 28800
+}
