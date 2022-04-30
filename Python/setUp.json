@@ -1,0 +1,23 @@
+{
+  "rateS": 48000,
+  "quietS": 9600,
+  "timeS": 12000,
+  "freqHz": 16.0,
+  "leftA": 12000,
+  "rightA": -1209.2611862778067,
+  "phaseA": -1.5680783565896996,
+  "leftB": 0,
+  "rightB": 0,
+  "phaseB": 0,
+  "numPts": 1,
+  "fName": "setUp",
+  "level": false,
+  "null": false,
+  "ref": false,
+  "numCyc": 4,
+  "elapseS": 43200,
+  "zRatio": [
+    9.92341450810711,
+    -1.5680783565896996
+  ]
+}
