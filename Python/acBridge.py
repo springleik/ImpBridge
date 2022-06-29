@@ -4,6 +4,7 @@
     Originated by M. Williamsen, 2 January 2021.
     http://www.williamsonic.com/ImpBridge/index.html
     Leveling and nulling implemented, as of 30 April 2022.
+    See Linear Technology App Note 43, Jim Williams, June 1990.
 '''
 
 import math, cmath, json, matplotlib.pyplot as plot
@@ -17,6 +18,7 @@ pTree = {}                  # measurement parameter tree
 omega = 0.0                 # angular frequency, radians/sample
 
 # initialize default values in parameter tree
+# TODO some params should allow complex values
 def setDefaultParams():
     pTree.clear()
     pTree.update({
@@ -32,6 +34,7 @@ def setDefaultParams():
         'phaseB':        0, # phase difference, second burst
         'numPts':        1, # measurements per iteration
         'fName':   'setUp', # name to use for disk files
+        'zRef':      100e6, # reference impedance (assume resistance for now)
         'level':     False, # enable amplitude leveling
         'null':      False, # enable null to balance bridge
         'ref':       False  # use reference value to calculate unknown
@@ -95,6 +98,7 @@ def saveParamTree(cmd):
     # create or overwrite setup file
     with open(pTree['fName'] + '.json', 'w') as qFile:
         json.dump(pTree, qFile, indent = 2)
+        qFile.write('\n')
 
 # compute a frame of stimulus
 def getFrame():
@@ -174,10 +178,10 @@ playStream = pa.open(
     output = True,
     start = False)
 
-# receive response from monaural input
+# receive response from stereo input
 recStream = pa.open(
     format = pyaudio.paInt16,
-    channels = 1,
+    channels = 2,
     rate = pTree['rateS'],
     frames_per_buffer = 1024,
     stream_callback = recCall,
@@ -199,7 +203,7 @@ def startStreaming():
     stimWave = wave.open(pTree['fName'] + '-stim.wav', 'wb')
     stimWave.setparams((2, 2, pTree['rateS'], pTree['elapseS'], 'NONE', ''))
     respWave = wave.open(pTree['fName'] + '-resp.wav', 'wb')
-    respWave.setparams((1, 2, pTree['rateS'], pTree['elapseS'], 'NONE', ''))
+    respWave.setparams((2, 2, pTree['rateS'], pTree['elapseS'], 'NONE', ''))
     
     # iterate over number of measurements
     for m in range(pTree['numPts']):
@@ -232,7 +236,7 @@ def synthOutput():
     stimWave = wave.open(pTree['fName'] + '-stim.wav', 'wb')
     stimWave.setparams((2, 2, pTree['rateS'], pTree['elapseS'], 'NONE', ''))
     respWave = wave.open(pTree['fName'] + '-resp.wav', 'wb')
-    respWave.setparams((1, 2, pTree['rateS'], pTree['elapseS'], 'NONE', ''))
+    respWave.setparams((2, 2, pTree['rateS'], pTree['elapseS'], 'NONE', ''))
     
     # iterate over number of measurements
     for m in range(pTree['numPts']):
@@ -241,7 +245,7 @@ def synthOutput():
             # write disk files
             theFrame = getFrame()
             stimWave.writeframes(struct.pack('<hh', *theFrame))
-            respWave.writeframes(struct.pack('<h', sum(theFrame)))
+            respWave.writeframes(struct.pack('<hh', *theFrame))
             playCall.n += 1
             
     # close disk files
@@ -270,10 +274,11 @@ def studyResponse():
     # update omega in radians/sample
     global omega
     omega = 2.0 * math.pi * pTree['freqHz'] / pTree['rateS']
-    print ('Omega: {0:.8f} rad/samp.'.format(omega))
+    print ('   Omega: {0:.8f} rad/samp.'.format(omega))
 
     # read measurement file into array
     mSeries = []
+    nSeries = []
     rName = pTree['fName'] + '-resp.wav'
     if os.path.exists(rName):
         with wave.open(rName, 'rb') as mFile:
@@ -281,8 +286,9 @@ def studyResponse():
             while True:
                 frame = mFile.readframes(1)
                 if not len(frame): break
-                sample = struct.unpack('<h', frame)
+                sample = struct.unpack('<hh', frame)
                 mSeries.append(sample[0])
+                nSeries.append(sample[1])
         print ('Measurement file "{0}" has {1} samples.'.format(rName, len(mSeries)))
     else:
         print ('Measurement file "{0}" not found.'.format(rName))
@@ -291,7 +297,7 @@ def studyResponse():
     # obtain amplitudes via inner product with cosine reference
     refCyc = round(pTree['numCyc'] / 2)
     burstRange = pTree['timeS'] * refCyc // pTree['numCyc']
-    refVec = [cmath.exp(1.0j * (n + 0.5) * omega).real for n in range(burstRange)]
+    refVec = [cmath.exp(complex(0, (n + 0.5) * omega)).real for n in range(burstRange)]
     squareNorm = dotPrdt(refVec, refVec)
     halfPi = pTree['timeS'] // pTree['numCyc'] // 4
     thePlot = thePlots = None
@@ -317,38 +323,68 @@ def studyResponse():
         vectorQB = mSeries[beginQB: endQB]
         vectorM  = mSeries[startOffs: (startOffs + pTree['elapseS'])]
         
+        vectorIC = nSeries[beginIA: endIA]
+        vectorQC = nSeries[beginQA: endQA]
+        vectorID = nSeries[beginIB: endIB]
+        vectorQD = nSeries[beginQB: endQB]
+        vectorN  = nSeries[startOffs: (startOffs + pTree['elapseS'])]
+
         # compute in-phase and quadrature components for each burst
         dotPrdtIA = dotPrdt(vectorIA, refVec)
         dotPrdtQA = dotPrdt(vectorQA, refVec)
         dotPrdtIB = dotPrdt(vectorIB, refVec)
         dotPrdtQB = dotPrdt(vectorQB, refVec)
         
+        dotPrdtIC = dotPrdt(vectorIC, refVec)
+        dotPrdtQC = dotPrdt(vectorQC, refVec)
+        dotPrdtID = dotPrdt(vectorID, refVec)
+        dotPrdtQD = dotPrdt(vectorQD, refVec)
+
         # combine into complex values for each burst
-        dotPrdtA = (dotPrdtIA - (1.0j * dotPrdtQA)) / squareNorm
-        dotPrdtB = (dotPrdtIB - (1.0j * dotPrdtQB)) / squareNorm
+        dotPrdtA = complex(dotPrdtIA, -dotPrdtQA) / squareNorm
+        dotPrdtB = complex(dotPrdtIB, -dotPrdtQB) / squareNorm
+
+        dotPrdtC = complex(dotPrdtIC, -dotPrdtQC) / squareNorm
+        dotPrdtD = complex(dotPrdtID, -dotPrdtQD) / squareNorm
             
         # plot measured response
-        if (thePlot): thePlot.plot(list(range(0, pTree['elapseS'])), vectorM, '.')
-        else: thePlots[n].plot(list(range(0, pTree['elapseS'])), vectorM, '.')
+        if (thePlot):
+            thePlot.plot(list(range(0, pTree['elapseS'])), vectorN, '.')
+            thePlot.plot(list(range(0, pTree['elapseS'])), vectorM, '.')
+        else:
+            thePlots[n].plot(list(range(0, pTree['elapseS'])), vectorN, '.')
+            thePlots[n].plot(list(range(0, pTree['elapseS'])), vectorM, '.')
 
         # plot fitted response for first burst
-        fitBurstA = [(dotPrdtA * cmath.exp(1.0j * (x + 0.5) * omega)).real for x in range(burstRange + halfPi)]
-        if (thePlot): thePlot.plot(list(range(beginIA, endQA)), fitBurstA, '-')
-        else: thePlots[n].plot(list(range(beginIA-startOffs, endQA-startOffs)), fitBurstA, '-')
+        fitBurstA = [(dotPrdtA * cmath.exp(complex(0, (x + 0.5) * omega))).real for x in range(burstRange + halfPi)]
+        fitBurstC = [(dotPrdtC * cmath.exp(complex(0, (x + 0.5) * omega))).real for x in range(burstRange + halfPi)]
+        if (thePlot):
+            thePlot.plot(list(range(beginIA, endQA)), fitBurstA, '-')
+            thePlot.plot(list(range(beginIA, endQA)), fitBurstC, '-')
+        else:
+            thePlots[n].plot(list(range(beginIA-startOffs, endQA-startOffs)), fitBurstA, '-')
+            thePlots[n].plot(list(range(beginIA-startOffs, endQA-startOffs)), fitBurstC, '-')
         
         # plot fitted response for second burst
-        fitBurstB = [(dotPrdtB * cmath.exp(1.0j * (x + 0.5) * omega)).real for x in range(burstRange + halfPi)]
-        if (thePlot): thePlot.plot(list(range(beginIB, endQB)), fitBurstB, '-')
-        else: thePlots[n].plot(list(range(beginIB-startOffs, endQB-startOffs)), fitBurstB, '-')
+        fitBurstB = [(dotPrdtB * cmath.exp(complex(0, (x + 0.5) * omega))).real for x in range(burstRange + halfPi)]
+        fitBurstD = [(dotPrdtD * cmath.exp(complex(0, (x + 0.5) * omega))).real for x in range(burstRange + halfPi)]
+        if (thePlot):
+            thePlot.plot(list(range(beginIB, endQB)), fitBurstB, '-')
+            thePlot.plot(list(range(beginIB, endQB)), fitBurstD, '-')
+        else:
+            thePlots[n].plot(list(range(beginIB-startOffs, endQB-startOffs)), fitBurstB, '-')
+            thePlots[n].plot(list(range(beginIB-startOffs, endQB-startOffs)), fitBurstD, '-')
 
         # calculate impedance ratio
-        print ('MA: {0:.8f}'.format(dotPrdtA))
-        print ('MB: {0:.8f}'.format(dotPrdtB))
+        print ('      MA: {0:.8f}'.format(dotPrdtA))
+        print ('      MB: {0:.8f}'.format(dotPrdtB))
+        print ('      MC: {0:.8f}'.format(dotPrdtC))
+        print ('      MD: {0:.8f}'.format(dotPrdtD))
         phaseA = cmath.exp(complex(0, pTree['phaseA'] / 2.0))
         phaseB = cmath.exp(complex(0, pTree['phaseB'] / 2.0))
         zRatio = ((pTree['leftA'] * phaseA * dotPrdtB - pTree['leftB'] * phaseB * dotPrdtA) /
             (pTree['rightB'] / phaseB * dotPrdtA - pTree['rightA'] / phaseA * dotPrdtB))
-        print ('Z1/Z2: {0:.8f}'.format(zRatio))
+        print ('  zRatio: {0:.8f}'.format(zRatio))
         pTree['zRatio'] = cmath.polar(zRatio)
         
         # proceed to next measurement
@@ -371,7 +407,7 @@ def studyResponse():
             pTree['leftA']  = 32000.0 * pTree['leftA'] / pTree['rightB']
             pTree['rightB'] = 32000
 
-    # given an impedance ratio, compute the excitation needed to null the bridge
+    # given an impedance ratio, compute excitation to null the bridge
     if 'null' in pTree and pTree['null']:
         magn = abs(zRatio)
         pTree['phaseA'] = cmath.phase(zRatio)
@@ -380,16 +416,57 @@ def studyResponse():
             pTree['rightA'] = -12000 / magn
         else:
             pTree['leftA'] = -12000 * magn
+            
+        # ignore second burst in this case
         pTree['leftB'] = pTree['rightB'] = pTree['phaseB'] = 0
         
-    # TODO check for reference value
-    # given an impedance ratio and a reference impedance, compute the other impedance
-    # parallel lumped component model implied
+    # given an impedance ratio and reference impedance, compute the unknown impedance
+    # TODO consider complex reference impedance
     if 'ref' in pTree and pTree['ref']:
-    
-        pass
-        
+        # get reference resistance from parameter tree
+        z1 = cmath.rect(pTree['zRef'], 0.0)
+        z2 = z1 / zRatio
+        print ('Ref  z1: {0}, z2: {1}'.format(z1, z2))
 
+        # compute unknown parallel resistance and capacitance
+        y2 = 1.0 / z2
+        r2 = 1.0 / y2.real
+        c2 = y2.imag / 2.0 / math.pi / pTree['freqHz']
+        print ('Meas r2: {0}, c2: {1}'.format(r2, c2))
+                
+    # replace z2 with a short circuit to calibrate detector gain and phase
+    # assumes right input is connected directly to right output
+    if 'cal' in pTree and pTree['cal']:
+        # find detector gain as a complex value
+        detGain = dotPrdtB / dotPrdtD
+        pTree['detGain'] = cmath.polar(detGain)
+        print (' detGain: {0:.8f}'.format(detGain))
+        
+        # find excitation gain as an absolute value
+        # TODO may include phase later
+        excGain = abs(dotPrdtD) / pTree['rightB']
+        pTree['excGain'] = excGain
+        print (' excGain: {0:.8f}'.format(excGain))
+        
+    # replace z2 with an open circuit to obtain ratio of zDet/z1
+    # assumes right input is connected directly to right output
+    if 'det' in pTree and pTree['det']:
+        # find excitation vector
+        excLeft = pTree['leftA'] * cmath.rect(pTree['excGain'], cmath.phase(dotPrdtD))
+        
+        # compute detector impedance
+        detLeft = dotPrdtA / cmath.rect(*(pTree['detGain']))
+        zDetRatio = detLeft / (excLeft - detLeft)
+        z1 = cmath.rect(pTree['zRef'], 0.0)
+        zDet = z1 * zDetRatio
+        print ('zDet: {0}'.format(zDet))
+
+        # compute detector parallel resistance and capacitance
+        yDet = 1.0 / zDet
+        rDet = 1.0 / yDet.real
+        cDet = yDet.imag / 2.0 / math.pi / pTree['freqHz']
+        print ('Meas rDet: {0}, cDet: {1}'.format(rDet, cDet))
+        
 def showHelp():
     print ('Commands available at acBridge prompt:')
     print (' calc  -- analyze measured response')
@@ -402,6 +479,13 @@ def showHelp():
     print (' save  -- save parameter tree to disk')
     print (' show  -- display parameter tree as JSON')
     print (' synth -- synthesize measurment file')
+    
+    print ('Keynames that control measurement:')
+    print (' level -- enables excitation leveling if true')
+    print (' null  -- enables bridge nulling if true')
+    print (' ref   -- compute unknown impedance from reference if true')
+    print (' cal   -- calibrate detector gain and phase if true')
+    print (' det   -- compute detector impedance if true')
 
 # main control loop
 done = False
@@ -423,7 +507,7 @@ while not done:
     elif not cmd.find('?'):     showHelp()
     
     # look for space-separated key-value pairs
-    # key names are case-sensitive, put strings in double quotes
+    # key names are case-sensitive, put string values in double quotes
     elif (' ' in cmd):
         key, value = cmd.split(' ', 1)
         try:
