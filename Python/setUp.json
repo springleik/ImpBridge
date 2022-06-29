@@ -2,22 +2,30 @@
   "rateS": 48000,
   "quietS": 9600,
   "timeS": 12000,
-  "freqHz": 16.0,
-  "leftA": 12000,
-  "rightA": -1209.2611862778067,
-  "phaseA": -1.5680783565896996,
+  "freqHz": 40.0,
+  "leftA": 5000,
+  "rightA": 0,
+  "phaseA": 0,
   "leftB": 0,
-  "rightB": 0,
+  "rightB": 5000,
   "phaseB": 0,
   "numPts": 1,
   "fName": "setUp",
+  "zRef": 100000000.0,
   "level": false,
   "null": false,
   "ref": false,
-  "numCyc": 4,
+  "numCyc": 10,
   "elapseS": 43200,
+  "cal": false,
   "zRatio": [
-    9.92341450810711,
-    -1.5680783565896996
-  ]
+    0.000793129528412991,
+    -2.936657645442674
+  ],
+  "detGain": [
+    9.550820566059901,
+    -2.741397828376429
+  ],
+  "excGain": 0.30886172578496196,
+  "det": true
 }
