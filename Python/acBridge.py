@@ -1,4 +1,4 @@
-''' File: measure.py
+''' File: acBridge.py
     Performs hardware-dependent measurement.
     Implements AC Bridge using Python Audio.
     Originated by M. Williamsen, 2 January 2021.
